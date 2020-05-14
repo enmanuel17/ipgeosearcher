@@ -14,11 +14,12 @@ def get_ip_geo_data(ip):
     """
     Gets ip address geo data in json format
     """
+    
     response = requests.get(
-    'http://api.ipstack.com/{}?'.format(ip),
-    params={'access_key': os.environ['geo_key']},
+        'http://api.ipstack.com/{}?'.format(ip),
+        params={'access_key': os.environ['geo_key']},
+    )
     return response.json()
-)
 
 
 def get_real_ip():
