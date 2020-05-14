@@ -3,10 +3,22 @@ from flask import jsonify
 from flask import Flask
 from flask import render_template
 from flask_bootstrap import Bootstrap
+import requests
+import os
 
 app = Flask(__name__)
 
 bootstrap = Bootstrap(app)
+
+def get_ip_geo_data(ip):
+    """
+    Gets ip address geo data in json format
+    """
+    response = requests.get(
+    'http://api.ipstack.com/{}?'.format(ip),
+    params={'access_key': os.environ['geo_key']},
+    return response.json()
+)
 
 
 def get_real_ip():
@@ -47,7 +59,7 @@ def get_ip():
     """
     Gets the IP of the user that made the request, the one behind the reverse proxy
     """
-    return render_template('ip_data.html', ip_data=get_real_ip()), 200
+    return render_template('ip_data.html', ip=get_real_ip()), ip_data=get_ip_geo_data(get_real_ip()), 200
 
 
 @app.route('/get_json_ip', methods=['GET'])
