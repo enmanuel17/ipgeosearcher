@@ -19,9 +19,20 @@ def get_real_ip():
     else:
         return request.environ['HTTP_X_FORWARDED_FOR']
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
     
 @app.route('/get_proxy_ip', methods=["GET"])
 def get_proxy_ip():
@@ -30,12 +41,14 @@ def get_proxy_ip():
     """
     return render_template('proxy_ip.html', ip_data=request.remote_addr), 200
 
+
 @app.route('/get_ip', methods=['GET'])
 def get_ip():
     """
     Gets the IP of the user that made the request, the one behind the reverse proxy
     """
     return render_template('ip_data.html', ip_data=get_real_ip()), 200
+
 
 @app.route('/get_json_ip', methods=['GET'])
 def get_json_ip():
