@@ -1,15 +1,14 @@
-{% extends "bootstrap/base.html" %}
-
-{% block title %}Ipgeosearcher{% endblock %}
-
 {% block head %}
-{{ super() }}
+<head>
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+</head>
 {% endblock %}
 
 {% block content %}
+<body>
 <div class="container">
     {% block page_content %}{% endblock %}
 </div>
+</body>
 {% endblock %}

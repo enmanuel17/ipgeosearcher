@@ -2,13 +2,10 @@ from flask import request
 from flask import jsonify
 from flask import Flask
 from flask import render_template
-from flask_bootstrap import Bootstrap
 import requests
 import os
 
 app = Flask(__name__)
-
-bootstrap = Bootstrap(app)
 
 class ipData:
     def __init__(self):
