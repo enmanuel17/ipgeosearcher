@@ -10,6 +10,12 @@ app = Flask(__name__)
 
 bootstrap = Bootstrap(app)
 
+class ipData:
+    def __init__(self):
+        self.country = None
+        self.city = None
+        self.IPS = None
+
 def get_ip_geo_data(ip):
     """
     Gets ip address geo data in json format
@@ -32,6 +38,24 @@ def get_real_ip():
     else:
         return request.environ['HTTP_X_FORWARDED_FOR']
 
+@app.route('/')
+def index():
+    ip = get_real_ip()
+    ip_data = ipData()
+    geo_data = get_ip_geo_data(ip)
+    ip_data.country = geo_data['country_name']
+    ip_data.city = geo_data['city']
+    return render_template('index.html', ip=ip, country=ip_data.country, city=ip_data.city)
+
+
+@app.route('/get_json_ip', methods=['GET'])
+def get_json_ip():
+    """
+    Gets the jsonified version of the requester's IP
+    """
+    return jsonify({'ip': get_real_ip()}), 200
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
@@ -40,36 +64,6 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html'), 500
-
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-    
-@app.route('/get_proxy_ip', methods=["GET"])
-def get_proxy_ip():
-    """
-    Gets the IP of the reserver proxy server
-    """
-    return render_template('proxy_ip.html', ip_data=request.remote_addr), 200
-
-
-@app.route('/get_ip', methods=['GET'])
-def get_ip():
-    """
-    Gets the IP of the user that made the request, the one behind the reverse proxy
-    """
-    return render_template('ip_data.html', ip=get_real_ip(), ip_data=get_ip_geo_data(get_real_ip())), 200
-
-
-@app.route('/get_json_ip', methods=['GET'])
-def get_json_ip():
-    """
-    Gets the jsonify version of the reverse proxy IP, aka get_ip jsonify
-    """
-    return jsonify({'ip': get_real_ip()}), 200
-
 
 if __name__ == '__main__':
     app.run()

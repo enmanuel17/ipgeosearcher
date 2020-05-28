@@ -4,11 +4,29 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Hello vistor!</h1>
-    <h2>These are the current routes you can use</h2>
-    <dv>/get_ip -> gets your public IP</dv>
-    <div>/get_proxy_ip gets the reverse proxy IP of this server</div>
-    <div>/get_json_ip, like get_ip but jsonify output</div>
-    </dv>
+    <center>
+        <p>
+        <h2>IP address: </h2>
+        </p>
+    </center>
+    <center>
+        <p>{{ ip }}</p>
+    </center>
+    <center>
+        <p>
+        <h2>Country: </h2>
+        </p>
+    </center>
+    <center>
+        <p>{{ country }}</p>
+    </center>
+    <center>
+        <p>
+        <h2>City: </h2>
+        </p>
+    </center>
+    <center>
+        <p>{{ city }}</p>
+    </center>
 </div>
 {% endblock %}
